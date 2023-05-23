@@ -91,7 +91,6 @@ def read_accounts(id):
     account = Account.find(id)
     if not account:
         abort(status.HTTP_404_NOT_FOUND, f"Account with id {id} could not be found")
-        
     return account.serialize(), status.HTTP_200_OK
 
 ######################################################################
@@ -109,7 +108,6 @@ def update_accounts(id):
     account = Account.find(id)
     if not account:
         abort(status.HTTP_404_NOT_FOUND, f"Account with id {id} could not be found")
-    
     account.deserialize(request.get_json())
     account.update()
 
@@ -118,6 +116,7 @@ def update_accounts(id):
 ######################################################################
 # DELETE AN ACCOUNT
 ######################################################################
+
 
 @app.route("/accounts/<int:id>", methods=["DELETE"])
 def delete_accounts(id):
@@ -129,10 +128,9 @@ def delete_accounts(id):
     account = Account.find(id)
     if not account:
         abort(status.HTTP_404_NOT_FOUND, f"Account with id {id} could not be found")
-            
     account.delete()
 
-    return "",status.HTTP_204_NO_CONTENT
+    return "", status.HTTP_204_NO_CONTENT
 
 ######################################################################
 #  U T I L I T Y   F U N C T I O N S
