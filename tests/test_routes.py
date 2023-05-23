@@ -24,6 +24,8 @@ HTTPS_ENVIRON = {'wsgi.url_scheme': 'https'}
 ######################################################################
 #  T E S T   C A S E S
 ######################################################################
+
+
 class TestAccountService(TestCase):
     """Account Service Tests"""
 
@@ -139,8 +141,8 @@ class TestAccountService(TestCase):
     def test_read_account_not_found(self):
         """when providing non existant id in GET, return 404 not found"""
         response = self.client.get(f"{BASE_URL}/0", content_type="application/json")
-        self.assertEqual(response.status_code,status.HTTP_404_NOT_FOUND)
-    
+        self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
+
     def test_account_update(self):
         """update account data based on id"""
         account = AccountFactory()
@@ -156,8 +158,8 @@ class TestAccountService(TestCase):
     def test_update_account_not_found(self):
         """when trying to update non existant id, return 404 not found"""
         response = self.client.put(f"{BASE_URL}/0", json=AccountFactory().serialize())
-        self.assertEqual(response.status_code,status.HTTP_404_NOT_FOUND)
-    
+        self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
+
     def test_delete_account(self):
         """delete an account based on id"""
         test_account = AccountFactory()
@@ -166,16 +168,16 @@ class TestAccountService(TestCase):
         account = create_response.get_json()
         account_url = f"{BASE_URL}/{account['id']}"
         exist_read_response = self.client.get(account_url, content_type="application/json")
-        self.assertEqual(exist_read_response.status_code,status.HTTP_200_OK)
+        self.assertEqual(exist_read_response.status_code, status.HTTP_200_OK)
         delete_response = self.client.delete(account_url)
-        self.assertEqual(delete_response.status_code,status.HTTP_204_NO_CONTENT)
+        self.assertEqual(delete_response.status_code, status.HTTP_204_NO_CONTENT)
         deleted_read_response = self.client.get(account_url, content_type="application/json")
-        self.assertEqual(deleted_read_response.status_code,status.HTTP_404_NOT_FOUND)
+        self.assertEqual(deleted_read_response.status_code, status.HTTP_404_NOT_FOUND)
 
     def test_delete_account_not_found(self):
         """when trying to delete non existant id, return 404 not found"""
         response = self.client.delete(f"{BASE_URL}/0")
-        self.assertEqual(response.status_code,status.HTTP_404_NOT_FOUND)
+        self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
 
     def test_list_accounts(self):
         """list all accounts"""
@@ -183,8 +185,8 @@ class TestAccountService(TestCase):
         self._create_accounts(num_accounts)
         response = self.client.get(BASE_URL)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(len(response.get_json()),num_accounts)
-    
+        self.assertEqual(len(response.get_json()), num_accounts)
+
     def test_list_when_no_account_exist(self):
         "try list accounts when no accounts exist"
         response = self.client.get(BASE_URL)
@@ -208,11 +210,10 @@ class TestAccountService(TestCase):
         }
         for key, value in headers.items():
             self.assertEqual(response.headers.get(key), value)
-    
+
     def test_cors_security(self):
         """It should return a CORS header"""
         response = self.client.get('/', environ_overrides=HTTPS_ENVIRON)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         # Check for the CORS header
         self.assertEqual(response.headers.get('Access-Control-Allow-Origin'), '*')
-
