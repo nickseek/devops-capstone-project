@@ -130,9 +130,9 @@ class TestAccountService(TestCase):
         self.assertEqual(create_response.status_code, status.HTTP_201_CREATED)
         account_id = create_response.get_json()["id"]
         read_response = self.client.get(f"{BASE_URL}/{account_id}", content_type="application/json")
-        self.assertEqual(read_response.status_code,status.HTTP_200_OK)
+        self.assertEqual(read_response.status_code, status.HTTP_200_OK)
         read_account = read_response.get_json()
-        self.assertEqual(read_account["name"],account.name)
+        self.assertEqual(read_account["name"], account.name)
 
     def test_read_account_not_found(self):
         """when providing non existant id in GET, return 404 not found"""
@@ -178,7 +178,7 @@ class TestAccountService(TestCase):
     def test_list_accounts(self):
         """list all accounts"""
         num_accounts = 5
-        accounts = self._create_accounts(num_accounts)
+        self._create_accounts(num_accounts)
         response = self.client.get(BASE_URL)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(len(response.get_json()),num_accounts)
